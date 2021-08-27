@@ -113,4 +113,13 @@ public class PlayerLogic : MonoBehaviour
         if (IsPlatform(collision)) bodyContacts--;
     }
 
+
+
+
+    public void Collects(CollectibleLogic.CType ctype, int value)
+    {
+        if (ctype==CollectibleLogic.CType.COIN)
+            GameManager.instance.AddScore(value);
+        Debug.Log("coin " + value);
+    }
 }

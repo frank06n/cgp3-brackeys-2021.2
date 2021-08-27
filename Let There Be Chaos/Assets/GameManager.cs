@@ -1,14 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static GameManager instance;
+
+    public TextMeshProUGUI scoreText;
+
+
+    [HideInInspector]
+    public PlayerLogic player;
+
+    private int score;
+
+
     void Awake()
     {
-        StartCoroutine(GameStart());
+        if (instance != null) Destroy(gameObject);
 
+        instance = this;
+
+        player = FindObjectOfType<PlayerLogic>();
+        score = 0;
+
+        StartCoroutine(GameStart());
     }
 
     IEnumerator GameStart()
@@ -19,6 +36,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+
+    public void AddScore(int score)
+    {
+        this.score += score;
+        scoreText.text = $"Score: {this.score:0000}";
+    }
 
     // Update is called once per frame
     void Update()
