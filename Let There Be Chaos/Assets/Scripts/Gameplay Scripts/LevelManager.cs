@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static LevelManager instance;
 
     public TextMeshProUGUI scoreText;
-
 
     [HideInInspector]
     public PlayerLogic player;
@@ -25,13 +24,13 @@ public class GameManager : MonoBehaviour
         player = FindObjectOfType<PlayerLogic>();
         score = 0;
 
-        StartCoroutine(GameStart());
+        StartCoroutine(GameTestStartDelay());
     }
 
-    IEnumerator GameStart()
+    IEnumerator GameTestStartDelay()
     {
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(1);
         Debug.Log("start");
         Time.timeScale = 1;
     }
@@ -43,7 +42,6 @@ public class GameManager : MonoBehaviour
         scoreText.text = $"Score: {this.score:0000}";
     }
 
-    // Update is called once per frame
     void Update()
     {
         

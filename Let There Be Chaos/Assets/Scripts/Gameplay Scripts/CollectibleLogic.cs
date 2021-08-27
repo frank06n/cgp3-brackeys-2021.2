@@ -17,9 +17,7 @@ public class CollectibleLogic : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Collected " + gameObject);
-
-            GameManager.instance.player.Collects(CollectibleType, Value);
+            LevelManager.instance.player.Collects(CollectibleType, Value);
 
             Destroy(gameObject);
         }

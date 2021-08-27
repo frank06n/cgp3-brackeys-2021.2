@@ -7,6 +7,7 @@ public class PlayerLogic : MonoBehaviour
     private Rigidbody2D rb;
     private float airtime;
     private float lastJumpPress;
+    private float lastJumpDone;
 
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Vector3 cameraOffset;
@@ -27,6 +28,7 @@ public class PlayerLogic : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         bodyContacts = 0;
+        lastJumpPress = airtime = 100; // Random big junk value (to avoid spawn jump)
     }
 
     private bool IsGrounded()
@@ -37,7 +39,13 @@ public class PlayerLogic : MonoBehaviour
     private void CheckJump()
     {
         if (lastJumpPress <= JumpBuffer && airtime <= CoyoteTime)
+        {
             rb.velocity = new Vector2(rb.velocity.x, JumpImpulse);
+            SceneManager2.instance.sfxPlayer.Play("jump");
+            lastJumpDone = 0;
+
+            Debug.Log("jump");
+        }
     }
 
     private void Update()
@@ -48,7 +56,8 @@ public class PlayerLogic : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))    lastJumpPress = 0;
         else                                    lastJumpPress += Time.deltaTime;
 
-        CheckJump();
+        if (lastJumpDone > 0.5f)    CheckJump();
+        else                        lastJumpDone += Time.deltaTime;
     }
 
     private void SmoothCameraFollow()
@@ -118,8 +127,16 @@ public class PlayerLogic : MonoBehaviour
 
     public void Collects(CollectibleLogic.CType ctype, int value)
     {
-        if (ctype==CollectibleLogic.CType.COIN)
-            GameManager.instance.AddScore(value);
-        Debug.Log("coin " + value);
+        if (ctype == CollectibleLogic.CType.COIN)
+        {
+            LevelManager.instance.AddScore(value);
+            SceneManager2.instance.sfxPlayer.Play("coin");
+        }
+    }
+
+    public void Damage(float damage)
+    {
+        Debug.Log("Damage delt by player: " + damage);
+        // dcrease health
     }
 }
