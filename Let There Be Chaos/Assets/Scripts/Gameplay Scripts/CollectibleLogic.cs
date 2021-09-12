@@ -7,11 +7,21 @@ public class CollectibleLogic : MonoBehaviour
     public enum CType
     {
         COIN,
-        MEMORY
+        MEMORY,
+        GUN
     };
 
     [SerializeField] private CType CollectibleType;
     [SerializeField] private int Value;
+
+
+    private void Start()
+    {
+        if (CollectibleType==CType.MEMORY)
+        {
+            LevelManager.instance.memoryCount++;
+        }  
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

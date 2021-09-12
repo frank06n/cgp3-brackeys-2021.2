@@ -22,13 +22,23 @@ public class PlayerLogic : MonoBehaviour
 
     private int bodyContacts;
 
-    
+    private PlayerGunLogic PlayerGun;
+    private HealthBarScript HealthBar;
+    private float healthPoints;
+    [SerializeField] private float MaxHealthPoints;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        PlayerGun = GetComponent<PlayerGunLogic>();
+        HealthBar = GetComponentInChildren<HealthBarScript>();
+
+        healthPoints = MaxHealthPoints;
         bodyContacts = 0;
         lastJumpPress = airtime = 100; // Random big junk value (to avoid spawn jump)
+
+        StartCoroutine(WalkSound());
     }
 
     private bool IsGrounded()
@@ -41,15 +51,17 @@ public class PlayerLogic : MonoBehaviour
         if (lastJumpPress <= JumpBuffer && airtime <= CoyoteTime)
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpImpulse);
-            SceneManager2.instance.sfxPlayer.Play("jump");
+            SceneManager2.instance.sfxPlayer.Play("player_jump");
             lastJumpDone = 0;
-
-            Debug.Log("jump");
         }
     }
 
     private void Update()
     {
+        if (LevelManager.instance.gameIsOver) return;
+
+        if (transform.position.y < -20f) Die();
+
         if (IsGrounded())   airtime = 0;
         else                airtime += Time.deltaTime;
 
@@ -58,6 +70,29 @@ public class PlayerLogic : MonoBehaviour
 
         if (lastJumpDone > 0.5f)    CheckJump();
         else                        lastJumpDone += Time.deltaTime;
+
+        if (Input.GetMouseButtonDown(0)) PlayerGun.FirePress();
+    }
+    
+    private IEnumerator WalkSound()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        SfxPlayer sfx = SceneManager2.instance.sfxPlayer;
+        string name = "player_walk";
+        AudioSource source = sfx.GetSource(name);
+        source.loop = true;
+        source.Play();
+
+        while (!LevelManager.instance.gameIsOver)
+        {
+            if (IsGrounded() && Mathf.Abs(rb.velocity.x) >= 1f)
+                source.volume = sfx.ValidateVolume(1f, name);
+            else
+                source.volume = sfx.ValidateVolume(0f, name);
+            yield return new WaitForSeconds(.1f);
+        }
+        source.Stop();
     }
 
     private void SmoothCameraFollow()
@@ -70,8 +105,11 @@ public class PlayerLogic : MonoBehaviour
     {
         float scaleX = direction * Mathf.Abs(transform.localScale.x);
         transform.localScale = new Vector3(scaleX, transform.localScale.y, 1);
-    }
 
+        float hb_scaleX = direction * Mathf.Abs(HealthBar.transform.localScale.x);
+        HealthBar.transform.localScale = new Vector3(hb_scaleX, HealthBar.transform.localScale.y, 1);
+    }
+    
     private void MoveTowards(int direction)
     {
         LookTowards(direction);
@@ -88,6 +126,7 @@ public class PlayerLogic : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (LevelManager.instance.gameIsOver || LevelManager.instance.gameIsPaused) return;
         SmoothCameraFollow();
 
 
@@ -107,36 +146,63 @@ public class PlayerLogic : MonoBehaviour
         }
     }
 
-    private bool IsPlatform(Collision2D collision)
+    private bool IsPlatformTopEdge(Collision2D collision)
     {
-        return collision.collider.CompareTag("Platform");
+        return collision.collider.CompareTag("PlatformTopEdge");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (IsPlatform(collision)) bodyContacts++;
+        if (IsPlatformTopEdge(collision)) bodyContacts++;
     }
     
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (IsPlatform(collision)) bodyContacts--;
+        if (IsPlatformTopEdge(collision)) bodyContacts--;
     }
 
-
-
+    public void Freeze()
+    {
+        rb.isKinematic = true;
+        rb.velocity = Vector2.zero;
+    }
 
     public void Collects(CollectibleLogic.CType ctype, int value)
     {
         if (ctype == CollectibleLogic.CType.COIN)
         {
             LevelManager.instance.AddScore(value);
-            SceneManager2.instance.sfxPlayer.Play("coin");
+            SceneManager2.instance.sfxPlayer.Play("player_collect_coin");
+        }
+        else if (ctype == CollectibleLogic.CType.MEMORY)
+        {
+            LevelManager.instance.AddMemory();
+            SceneManager2.instance.sfxPlayer.Play("player_collect_memory");
+        }
+        else if (ctype == CollectibleLogic.CType.GUN)
+        {
+            PlayerGun.SetHolding(true);
         }
     }
 
     public void Damage(float damage)
     {
-        Debug.Log("Damage delt by player: " + damage);
-        // dcrease health
+        healthPoints -= damage;
+        healthPoints = Mathf.Max(healthPoints, 0);
+        HealthBar.UpdateValue(healthPoints / MaxHealthPoints);
+        SceneManager2.instance.sfxPlayer.Play("player_hurt");
+        if (healthPoints == 0) Die();
+    }
+    
+    public void ResetHealth()
+    {
+        healthPoints = MaxHealthPoints;
+        HealthBar.UpdateValue(1);
+    }
+
+    private void Die()
+    {
+        SceneManager2.instance.sfxPlayer.Play("player_die");
+        LevelManager.instance.GameOver(false);
     }
 }

@@ -9,11 +9,13 @@ public class SceneManager2 : MonoBehaviour {
 
 
     public static SceneManager2 instance;
+    public int buildIndex { get; private set; }
 
     private void Awake()
     {
         if (instance != null) Destroy(gameObject);
         instance = this;
+        buildIndex = SceneManager.GetActiveScene().buildIndex;
     }
 
     public void LoadScene(string name)

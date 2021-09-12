@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platform
-  - PlatformBody
+  - PlatformTopEdge
+  - EnemyTurret
   layers:
   - Default
   - TransparentFX
@@ -42,4 +43,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: HealthBars
+    uniqueID: 2362052451
     locked: 0

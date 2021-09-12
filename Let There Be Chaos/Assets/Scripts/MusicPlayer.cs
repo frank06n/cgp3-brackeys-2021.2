@@ -19,7 +19,7 @@ public class MusicPlayer : MonoBehaviour
 		source = GetComponent<AudioSource>();
 		LoadVolume(-1);
 
-		StartCoroutine(Fade(true));
+		//StartCoroutine(Fade(true));
 
 		while (true) {
 			source.clip = GetAnotherClip();
@@ -41,12 +41,6 @@ public class MusicPlayer : MonoBehaviour
 		if (!isFadingVolume)
 			source.volume = maxVolume * (halfVolume ? 0.5f : 1);
 	}
-
-	private void HalfVolume()
-    {
-        halfVolume = true;
-        LoadVolume(-1);
-    }
 
 	public void FadeOut() {
 		StartCoroutine(Fade(false));

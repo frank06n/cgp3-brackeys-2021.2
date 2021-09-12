@@ -5,7 +5,7 @@ public class SfxPlayer : MonoBehaviour {
 
 	[System.Serializable]
 	public class Sfx {
-		public string name;
+		//public string name;
 
 		public AudioClip clip;
 		[Range(0,1)]
@@ -52,23 +52,23 @@ public class SfxPlayer : MonoBehaviour {
 
     private Sfx GetSfx(string name)
     {
-        return Array.Find(sfxs, _sfx => _sfx.name == name);
+        return Array.Find(sfxs, _sfx => _sfx.clip.name == name);
     }
 
-	private AudioSource GetSource(string name)
+	public AudioSource GetSource(string name)
     {
-        Sfx sfx = Array.Find(sfxs, _sfx => _sfx.name == name);
+		Sfx sfx = GetSfx(name);
         return (sfx == null) ? null : sfx.source;
     }
 
-	private float ValidateVolume(float sfxVolume, string name)
+	public float ValidateVolume(float sfxVolume, string name)
     {
         return GetSfx(name).selfVolume * setVolume * sfxVolume;
     }
 
 	public void Play(string name)
 	{
-		Sfx sfx = Array.Find(sfxs, _sfx => _sfx.name == name);
+		Sfx sfx = GetSfx(name);
 		if (sfx == null)
 			Debug.LogWarning("No loaded Sfx found: '" + name + "'");
 		else

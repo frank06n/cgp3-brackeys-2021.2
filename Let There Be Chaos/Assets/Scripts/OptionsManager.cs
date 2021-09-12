@@ -5,32 +5,18 @@ public class OptionsManager : MonoBehaviour {
 	[SerializeField] private Slider musicSlider;
 	[SerializeField] private Slider sfxSlider;
 
-	private float defaultMusicValue;
-	private float defaultSfxValue;
-
 	public static readonly string musicKey = "OPTIONS_MUSIC";
 	public static readonly string sfxKey = "OPTIONS_SFX";
 
-	[SerializeField] private SceneManager2 sceneManager2;
-
 	void Start() {
-		defaultMusicValue = musicSlider.value;
-		defaultSfxValue = sfxSlider.value;
-
-		if (PlayerPrefs.HasKey(musicKey))
-			musicSlider.value = PlayerPrefs.GetFloat(musicKey);
-		if (PlayerPrefs.HasKey(sfxKey))
-			sfxSlider.value = PlayerPrefs.GetFloat(sfxKey);
+		musicSlider.value = PlayerPrefs.GetFloat(musicKey, 1);
+		sfxSlider.value = PlayerPrefs.GetFloat(sfxKey, 1);
 	}
 
 	void Update() {
-		sceneManager2.musicPlayer.LoadVolume(musicSlider.value);
-		sceneManager2.sfxPlayer.LoadVolume(sfxSlider.value);
-	}
-
-	public void LoadDefaults() {
-		musicSlider.value = defaultMusicValue;
-		sfxSlider.value = defaultSfxValue;
+		SceneManager2.instance.musicPlayer.LoadVolume(musicSlider.value);
+		SceneManager2.instance.sfxPlayer.LoadVolume(sfxSlider.value);
+		Apply();
 	}
 
 	public void Apply() {
@@ -39,7 +25,9 @@ public class OptionsManager : MonoBehaviour {
 		PlayerPrefs.Save();
 	}
 
-	public void Back() {
-		sceneManager2.LoadScene("MainMenu");
+    public void ResetProgress()
+    {
+		PlayerPrefs.DeleteAll();
+		PlayerPrefs.Save();
 	}
 }
