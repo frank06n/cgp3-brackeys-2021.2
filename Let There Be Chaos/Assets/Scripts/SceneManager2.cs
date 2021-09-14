@@ -18,6 +18,11 @@ public class SceneManager2 : MonoBehaviour {
         buildIndex = SceneManager.GetActiveScene().buildIndex;
     }
 
+    public string GetActiveSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
     public void LoadScene(string name)
     {
         StartCoroutine(PrepareLoadScene(name));

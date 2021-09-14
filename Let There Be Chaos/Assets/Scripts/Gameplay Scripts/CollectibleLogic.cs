@@ -8,6 +8,7 @@ public class CollectibleLogic : MonoBehaviour
     {
         COIN,
         MEMORY,
+        HEALTHKIT,
         GUN
     };
 

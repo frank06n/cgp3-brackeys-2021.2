@@ -169,20 +169,38 @@ public class PlayerLogic : MonoBehaviour
 
     public void Collects(CollectibleLogic.CType ctype, int value)
     {
-        if (ctype == CollectibleLogic.CType.COIN)
+        switch (ctype)
         {
-            LevelManager.instance.AddScore(value);
-            SceneManager2.instance.sfxPlayer.Play("player_collect_coin");
+            case CollectibleLogic.CType.COIN:
+                LevelManager.instance.AddScore(value);
+                SceneManager2.instance.sfxPlayer.Play("player_collect_coin");
+                break;
+
+            case CollectibleLogic.CType.MEMORY:
+                LevelManager.instance.AddMemory();
+                SceneManager2.instance.sfxPlayer.Play("player_collect_memory");
+                break;
+
+            case CollectibleLogic.CType.HEALTHKIT:
+                Regen(value);
+                break;
+
+            case CollectibleLogic.CType.GUN:
+                PlayerGun.SetHolding(true);
+                break;
+
+            default:
+                Debug.Log("Unknown collectible: " + ctype);
+                break;
         }
-        else if (ctype == CollectibleLogic.CType.MEMORY)
-        {
-            LevelManager.instance.AddMemory();
-            SceneManager2.instance.sfxPlayer.Play("player_collect_memory");
-        }
-        else if (ctype == CollectibleLogic.CType.GUN)
-        {
-            PlayerGun.SetHolding(true);
-        }
+    }
+
+    private void Regen(float value)
+    {
+        healthPoints += value;
+        healthPoints = Mathf.Min(healthPoints, MaxHealthPoints);
+        HealthBar.UpdateValue(healthPoints / MaxHealthPoints);
+        // play regen sound
     }
 
     public void Damage(float damage)

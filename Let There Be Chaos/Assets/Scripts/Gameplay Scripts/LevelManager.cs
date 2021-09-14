@@ -8,8 +8,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
 
-    [Header("Level Data")]
-    public int LevelNumber;
+    private int LevelNumber;
 
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -58,6 +57,16 @@ public class LevelManager : MonoBehaviour
         gameIsOver = false;
         gameWon = false;
         gameIsPaused = false;
+
+        string sceneName = SceneManager2.instance.GetActiveSceneName();
+        if (sceneName.StartsWith("Level ")) {
+            LevelNumber = int.Parse(sceneName.Substring(6));
+        }
+        else
+        {
+            LevelNumber = 1;
+            Debug.LogWarning("Scene name for this Level is not correctly formatted");
+        }
     }
 
 
@@ -94,12 +103,12 @@ public class LevelManager : MonoBehaviour
         if (won)
         {
             SceneManager2.instance.sfxPlayer.Play("player_victory");
-            DisplayPanel(true, "You won the game! :)");
+            DisplayPanel(true, "You won the level! :)");
         }
         else
         {
             SceneManager2.instance.sfxPlayer.Play("player_lose");
-            DisplayPanel(true, "You lost the game! :(");
+            DisplayPanel(true, "You lost the level! :(");
         }
     }
 
