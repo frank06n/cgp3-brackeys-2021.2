@@ -967,16 +967,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Collect the memory '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3d252ac1271f80e4081dc42e0d8649a0, type: 2}
-  m_sharedMaterial: {fileID: 7197368335474600819, guid: 3d252ac1271f80e4081dc42e0d8649a0,
+  m_fontAsset: {fileID: 11400000, guid: 4eb1a643985d8d843b573a7f1a0d68ba, type: 2}
+  m_sharedMaterial: {fileID: -1683218112048696301, guid: 4eb1a643985d8d843b573a7f1a0d68ba,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293754941
-  m_fontColor: {r: 0.24056602, g: 0.50038785, b: 0.92941177, a: 1}
+    rgba: 4289550621
+  m_fontColor: {r: 0.11213954, g: 0.34873217, b: 0.6792453, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1063,7 +1063,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7197368335474600819, guid: 3d252ac1271f80e4081dc42e0d8649a0, type: 2}
+  - {fileID: -1683218112048696301, guid: 4eb1a643985d8d843b573a7f1a0d68ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1426,16 +1426,16 @@ MonoBehaviour:
 
     Space - Jump'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3d252ac1271f80e4081dc42e0d8649a0, type: 2}
-  m_sharedMaterial: {fileID: 7197368335474600819, guid: 3d252ac1271f80e4081dc42e0d8649a0,
+  m_fontAsset: {fileID: 11400000, guid: 4eb1a643985d8d843b573a7f1a0d68ba, type: 2}
+  m_sharedMaterial: {fileID: -1683218112048696301, guid: 4eb1a643985d8d843b573a7f1a0d68ba,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293754941
-  m_fontColor: {r: 0.24056602, g: 0.50038785, b: 0.92941177, a: 1}
+    rgba: 4289550621
+  m_fontColor: {r: 0.11213954, g: 0.34873217, b: 0.6792453, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1522,7 +1522,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7197368335474600819, guid: 3d252ac1271f80e4081dc42e0d8649a0, type: 2}
+  - {fileID: -1683218112048696301, guid: 4eb1a643985d8d843b573a7f1a0d68ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
