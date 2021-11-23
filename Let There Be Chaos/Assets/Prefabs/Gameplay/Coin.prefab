@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollectibleType: 0
   Value: 10
+  HoverYChange: 0.2
+  HoverSpeed: 3
 --- !u!61 &5678704511145253628
 BoxCollider2D:
   m_ObjectHideFlags: 0
